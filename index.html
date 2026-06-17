@@ -622,11 +622,93 @@ function selectFmt(btn){
 
 // DOWNLOAD
 function adaptMath(targetW,targetH){
-  const origH=885;
-  return allFields().map(f=>{
-    const p=gp(si,f.key);
-    return{key:f.key,lp:p.lp,tp:Math.min(p.tp*(targetH/origH),90),fs:gf(si,f.key),align:gal(si,f.key)};
-  });
+  // Original canvas: 750w x 885h
+  const origW=750, origH=885;
+  const scaleX=targetW/origW;
+
+  // For each format, we define smart layout zones
+  // Story (1080x1920): much taller - push content to center-bottom area
+  // Post  (600x800):   slightly taller - scale proportionally with adjustments
+
+  const isStory = targetH/targetW > 1.5; // aspect > 1.5 = story
+  const isPost  = !isStory;
+
+  const fields = allFields();
+
+  // Separate fields into "header" (title/subtitle) and "detail" (fecha/hora/lugar)
+  const headerKeys = ['subtitulo','descripcion','evento'];
+  const detailKeys = ['fecha','hora','lugar'];
+
+  // Get original Y positions to understand relative ordering
+  const sorted = fields.slice().sort((a,b)=>gp(si,a.key).tp - gp(si,b.key).tp);
+
+  if(isStory){
+    // Story: 1080x1920
+    // Logo area: top 12%
+    // Empty space: 12-45% (lots of breathing room)  
+    // Header text: 45-65%
+    // Detail boxes area: 65-82%
+    // Bottom: 82-100%
+
+    const headerFields = sorted.filter(f=>headerKeys.includes(f.key));
+    const detailFields = sorted.filter(f=>detailKeys.includes(f.key));
+    const extraFields  = sorted.filter(f=>!headerKeys.includes(f.key)&&!detailKeys.includes(f.key));
+
+    const result = [];
+    
+    // Header fields - start at 45%
+    let currentTp = 45;
+    headerFields.forEach(f=>{
+      const fs = Math.round(gf(si,f.key) * scaleX * 0.85); // slightly smaller to fit width
+      const lh = glh(si,f.key);
+      const nLines = gv(si,f.key).split('\n').length;
+      result.push({key:f.key, lp:7.5, tp:currentTp, fs:fs, align:gal(si,f.key)});
+      currentTp += nLines * fs * lh / targetH * 100 + 2;
+    });
+
+    // Gap before details
+    currentTp += 3;
+
+    // Detail fields - keep their relative X positions, stack vertically
+    // Slide 5 has fecha at 26.5%, hora at 66.6% - keep that split
+    // But adjust Y to be sequential
+    const fechaF = detailFields.find(f=>f.key==='fecha');
+    const horaF  = detailFields.find(f=>f.key==='hora');
+    const lugarF = detailFields.find(f=>f.key==='lugar');
+    
+    const detailFs = Math.round(22 * scaleX * 0.75);
+    
+    if(fechaF) result.push({key:fechaF.key, lp:gp(si,fechaF.key).lp, tp:currentTp, fs:detailFs, align:'left'});
+    if(horaF)  result.push({key:horaF.key,  lp:gp(si,horaF.key).lp,  tp:currentTp, fs:detailFs, align:'left'});
+    currentTp += 8;
+    if(lugarF) result.push({key:lugarF.key, lp:gp(si,lugarF.key).lp, tp:currentTp, fs:detailFs, align:'left'});
+    currentTp += 8;
+    
+    extraFields.forEach(f=>{
+      result.push({key:f.key, lp:gp(si,f.key).lp, tp:Math.min(currentTp,88), fs:Math.round(gf(si,f.key)*scaleX*0.8), align:gal(si,f.key)});
+      currentTp+=6;
+    });
+
+    return result;
+
+  } else {
+    // Post (600x800): origRatio=750/885=0.847, postRatio=600/800=0.75
+    // Content fits well but needs slight vertical compression
+    // Scale Y positions: orig content fits in 0-88% of 885px = 780px
+    // Post: 0-88% of 800px = 704px. Ratio = 704/780 = 0.90
+
+    const yScale = (targetH * 0.88) / (origH * 0.88);
+    
+    return sorted.map(f=>{
+      const p = gp(si,f.key);
+      const fs = Math.round(gf(si,f.key) * scaleX * 0.9);
+      // Keep X, scale Y
+      let newTp = p.tp * yScale;
+      // Clamp
+      newTp = Math.min(newTp, 88);
+      return {key:f.key, lp:p.lp, tp:newTp, fs:fs, align:gal(si,f.key)};
+    });
+  }
 }
 
 function downloadCanvas(t,fname){
@@ -644,16 +726,17 @@ function drawOnCanvas(t,bgSrc,adapted,targetW,targetH){
       if(bgR>tR){sw=sh*tR;sx=(bg.naturalWidth-sw)/2;}
       else{sh=sw/tR;sy=(bg.naturalHeight-sh)/2;}
       tc.drawImage(bg,sx,sy,sw,sh,0,0,targetW,targetH);
-      // Static
-      const st=STATIC[String(SLIDES[si].id)];
-      if(st){
-        const W=targetW,H=targetH;
-        (st.boxes||[]).forEach(b=>{const[lp,tp,wp,hp,hex,alpha]=b;const r=parseInt(hex.slice(1,3),16),g2=parseInt(hex.slice(3,5),16),bl=parseInt(hex.slice(5,7),16);tc.fillStyle='rgba('+r+','+g2+','+bl+','+alpha+')';tc.beginPath();tc.roundRect(lp/100*W,tp/100*H,wp/100*W,hp/100*H,Math.round(8*W/450));tc.fill();});
-        (st.lines||[]).forEach(l=>{const[x1lp,y1tp,x2lp,y2tp,color,lw]=l;tc.strokeStyle=color;tc.lineWidth=Math.max(1,lw*W/450);tc.beginPath();tc.moveTo(x1lp/100*W,y1tp/100*H);tc.lineTo(x2lp/100*W,y2tp/100*H);tc.stroke();});
+      // Static boxes/lines/assets only for original format
+      if(!adapted){
+        const st=STATIC[String(SLIDES[si].id)];
+        if(st){
+          const W=targetW,H=targetH;
+          (st.boxes||[]).forEach(b=>{const[lp,tp,wp,hp,hex,alpha]=b;const r=parseInt(hex.slice(1,3),16),g2=parseInt(hex.slice(3,5),16),bl=parseInt(hex.slice(5,7),16);tc.fillStyle='rgba('+r+','+g2+','+bl+','+alpha+')';tc.beginPath();tc.roundRect(lp/100*W,tp/100*H,wp/100*W,hp/100*H,Math.round(8*W/450));tc.fill();});
+          (st.lines||[]).forEach(l=>{const[x1lp,y1tp,x2lp,y2tp,color,lw]=l;tc.strokeStyle=color;tc.lineWidth=Math.max(1,lw*W/450);tc.beginPath();tc.moveTo(x1lp/100*W,y1tp/100*H);tc.lineTo(x2lp/100*W,y2tp/100*H);tc.stroke();});
+        }
+        const sid2=String(SLIDES[si].id);
+        (assetImgs[sid2]||[]).forEach((img,i)=>{if(!img.complete||!img.naturalWidth)return;const p=ASSETS[sid2][i];tc.drawImage(img,p[0]/100*targetW,p[1]/100*targetH,p[2]/100*targetW,p[3]/100*targetH);});
       }
-      // Assets
-      const sid=String(SLIDES[si].id);
-      (assetImgs[sid]||[]).forEach((img,i)=>{if(!img.complete||!img.naturalWidth)return;const p=ASSETS[sid][i];tc.drawImage(img,p[0]/100*targetW,p[1]/100*targetH,p[2]/100*targetW,p[3]/100*targetH);});
       // Text
       const scaleX=targetW/750;
       allFields().forEach(f=>{
