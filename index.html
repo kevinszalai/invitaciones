@@ -120,42 +120,35 @@ textarea.active-f{border-color:#00C4DF;background:#142e48}
 .otp-resend{background:none;border:none;color:#00528F;font-size:12px;cursor:pointer;font-family:'Poppins',Arial,sans-serif;text-decoration:underline;margin-top:8px}
 .otp-back{background:none;border:none;color:#7fadc8;font-size:12px;cursor:pointer;font-family:'Poppins',Arial,sans-serif;margin-top:4px;display:block;width:100%}
 
-/* ADMIN */
-#admin-overlay{position:fixed;inset:0;background:rgba(0,20,50,.92);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center}
-#admin-overlay.open{display:flex}
-.admin-card{background:#0f2d44;border:1.5px solid rgba(0,196,223,.3);border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto}
-.admin-title{font-size:16px;font-weight:700;color:#00C4DF;margin-bottom:4px}
-.admin-sub{font-size:11px;color:#7fadc8;margin-bottom:20px}
-.admin-close{float:right;background:transparent;border:none;color:#7fadc8;font-size:18px;cursor:pointer;margin-top:-4px}
-.admin-close:hover{color:#ff436e}
-.admin-slide{margin-bottom:16px;border:1px solid rgba(0,196,223,.15);border-radius:10px;overflow:hidden}
-.admin-slide-hdr{background:#142e48;padding:10px 14px;font-size:11px;font-weight:700;color:#00C4DF;display:flex;align-items:center;gap:8px}
-.admin-slide-hdr span{font-size:10px;color:#7fadc8;font-weight:400;margin-left:auto}
-.admin-field{padding:10px 14px;border-top:1px solid rgba(0,196,223,.08);display:flex;align-items:flex-start;gap:10px}
-.admin-field-label{font-size:10px;color:#7fadc8;min-width:80px;flex-shrink:0;padding-top:2px}
-.admin-field-vals{display:flex;flex-direction:column;gap:4px;flex:1}
-.admin-pos-row{display:flex;align-items:center;gap:6px}
-.admin-pos-row label{font-size:10px;color:#7fadc8;min-width:24px}
-.admin-pos-row input[type=range]{flex:1;accent-color:#00C4DF;height:4px}
-.admin-pos-val{font-size:10px;color:#E4FF00;font-weight:700;min-width:36px;text-align:right}
-#admin-save-btn{width:100%;background:linear-gradient(135deg,#00528F,#008091);color:white;font-family:'Poppins',Arial,sans-serif;font-weight:700;font-size:13px;border:none;border-radius:8px;padding:11px;cursor:pointer;margin-top:12px}
-#admin-save-btn:hover{opacity:.9}
-.admin-pin-overlay{position:fixed;inset:0;background:rgba(0,10,30,.95);z-index:600;display:flex;align-items:center;justify-content:center}
-.admin-pin-card{background:white;border-radius:16px;padding:36px;width:100%;max-width:320px;text-align:center}
-.admin-pin-title{font-size:18px;font-weight:700;color:#002447;margin-bottom:6px}
-.admin-pin-sub{font-size:12px;color:#7fadc8;margin-bottom:20px}
-.admin-pin-input{width:100%;border:1.5px solid #d0dff0;border-radius:10px;padding:12px;font-size:24px;font-family:'Poppins',Arial,sans-serif;outline:none;color:#002447;text-align:center;letter-spacing:8px;margin-bottom:8px}
-.admin-pin-input:focus{border-color:#00528F}
-.admin-pin-err{font-size:11px;color:#e53935;min-height:16px;margin-bottom:10px}
-.admin-pin-btn{width:100%;background:#002447;color:white;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;font-family:'Poppins',Arial,sans-serif;cursor:pointer;margin-bottom:8px}
-.admin-pin-btn:hover{opacity:.9}
-.admin-pin-cancel{background:none;border:none;font-size:12px;color:#7fadc8;cursor:pointer;font-family:'Poppins',Arial,sans-serif}
+
+
+/* ADMIN BAR */
+#admin-bar{display:none;position:fixed;top:0;left:0;right:0;z-index:400;background:linear-gradient(90deg,#001a3a,#003366);border-bottom:2px solid #00C4DF;padding:9px 16px;align-items:center;gap:12px;box-shadow:0 2px 20px rgba(0,196,223,0.3)}
+#admin-bar.on{display:flex}
+.admin-bar-tag{font-size:10px;font-weight:800;color:#00C4DF;letter-spacing:2px;background:rgba(0,196,223,.15);border:1px solid rgba(0,196,223,.4);border-radius:4px;padding:3px 8px}
+.admin-bar-hint{font-size:11px;color:rgba(255,255,255,0.65)}
+.admin-bar-save{background:#00C4DF;color:#001a3a;border:none;border-radius:6px;padding:6px 16px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Poppins',Arial,sans-serif;transition:opacity .15s}
+.admin-bar-save:hover{opacity:.85}
+.admin-bar-exit{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Poppins',Arial,sans-serif}
+.admin-bar-exit:hover{background:rgba(255,255,255,.15)}
+/* PIN MODAL */
+#admin-pin-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,30,.96);z-index:600;align-items:center;justify-content:center}
+#admin-pin-overlay.on{display:flex}
+.admin-pin-card{background:white;border-radius:18px;padding:40px 36px;width:100%;max-width:310px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.admin-pin-title{font-size:20px;font-weight:800;color:#002447;margin-bottom:6px}
+.admin-pin-sub{font-size:12px;color:#9ab0cc;margin-bottom:24px}
+.admin-pin-input{width:100%;border:2px solid #d0dff0;border-radius:12px;padding:14px;font-size:28px;font-family:'Poppins',Arial,sans-serif;outline:none;color:#002447;text-align:center;letter-spacing:10px;margin-bottom:8px;background:#f8fafd}
+.admin-pin-input:focus{border-color:#002447}
+.admin-pin-err{font-size:11px;color:#e53935;min-height:16px;margin-bottom:12px}
+.admin-pin-btn{width:100%;background:#002447;color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;font-family:'Poppins',Arial,sans-serif;cursor:pointer;margin-bottom:10px}
+.admin-pin-btn:hover{background:#001a35}
+.admin-pin-cancel{background:none;border:none;font-size:12px;color:#9ab0cc;cursor:pointer;font-family:'Poppins',Arial,sans-serif}
 </style>
 </head>
 <body>
 
 <!-- ADMIN PIN -->
-<div id="admin-pin-overlay" style="display:none">
+<div id="admin-pin-overlay">
   <div class="admin-pin-card">
     <div class="admin-pin-title">Acceso Admin</div>
     <div class="admin-pin-sub">Ingresá el código de administrador</div>
@@ -166,15 +159,17 @@ textarea.active-f{border-color:#00C4DF;background:#142e48}
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="admin-overlay">
-  <div class="admin-card">
-    <button class="admin-close" onclick="closeAdmin()">✕</button>
-    <div class="admin-title">⚙ Panel de Administrador</div>
-    <div class="admin-sub">Mové los textos para cada modelo. Las posiciones se guardan como default para todos los usuarios.</div>
-    <div id="admin-slides"></div>
-    <button id="admin-save-btn" onclick="saveAdminPositions()">💾 Guardar posiciones</button>
+<!-- ADMIN BAR -->
+<div id="admin-bar">
+  <span class="admin-bar-tag">⚙ ADMIN</span>
+  <span class="admin-bar-hint">Arrastrá cualquier texto en el canvas · Navegá entre invitaciones libremente</span>
+  <div style="margin-left:auto;display:flex;gap:8px">
+    <button class="admin-bar-save" onclick="saveAdminPositions()">💾 Guardar todo</button>
+    <button class="admin-bar-exit" onclick="closeAdmin()">✕ Salir</button>
   </div>
+</div>
+
+
 </div>
 
 
@@ -389,6 +384,7 @@ function openEditor(idx){
   document.getElementById('screen-select').style.display='none';
   document.getElementById('screen-edit').style.display='flex';
   document.getElementById('edit-name').textContent=SLIDES[si].label;
+  applyAdminDefaults(si);
   applyAdminDefaults(si);
   buildFields();
   loadBg();
@@ -656,10 +652,7 @@ function hitTest(cx,cy){
 }
 cv.addEventListener('pointerdown',e=>{
   const{cx,cy}=getXY(e),h=hitTest(cx,cy);
-  if(_adminMode && h && h.key!=='__qr__'){
-    // Admin: drag text fields
-    drag={key:h.key,ox:h.ox,oy:h.oy};cv.setPointerCapture(e.pointerId);draw();
-  } else if(h&&h.key==='__qr__'){
+  if(h&&(h.key==='__qr__'||_adminMode)){
     drag={key:h.key,ox:h.ox,oy:h.oy};cv.setPointerCapture(e.pointerId);draw();
   }else{
     sel=null;document.querySelectorAll('#fields textarea').forEach(t=>t.classList.remove('active-f'));draw();
@@ -669,19 +662,13 @@ cv.addEventListener('pointermove',e=>{
   if(!drag)return;
   const{cx,cy}=getXY(e);
   if(drag.key==='__qr__'){
-    if(qrState[si]){
-      qrState[si].lp=Math.max(0,Math.min(92,((cx-drag.ox)/cv.width)*100));
-      qrState[si].tp=Math.max(0,Math.min(92,((cy-drag.oy)/cv.height)*100));
-    }
-  } else if(_adminMode){
-    gs(si).pos[drag.key]={
-      lp:Math.max(0,Math.min(95,((cx-drag.ox)/cv.width)*100)),
-      tp:Math.max(0,Math.min(97,((cy-drag.oy)/cv.height)*100))
-    };
+    if(qrState[si]){qrState[si].lp=Math.max(0,Math.min(92,((cx-drag.ox)/cv.width)*100));qrState[si].tp=Math.max(0,Math.min(92,((cy-drag.oy)/cv.height)*100));}
+  }else{
+    gs(si).pos[drag.key]={lp:Math.max(0,Math.min(95,((cx-drag.ox)/cv.width)*100)),tp:Math.max(0,Math.min(97,((cy-drag.oy)/cv.height)*100))};
   }
   draw();
 });
-cv.addEventListener('pointerup',()=>{if(drag){pushHistory(si);}drag=null;});
+cv.addEventListener('pointerup',()=>{if(drag)pushHistory(si);drag=null;});
 
 // QR
 function toggleQRPanel(show){
@@ -1063,8 +1050,10 @@ document.getElementById('dl-btn').onclick=async()=>{
 document.getElementById('undo-btn').onclick=()=>undo();
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undo();}});
 document.getElementById('back-btn').onclick=()=>{
-  const changed=Object.keys(gs(si).vals).length||Object.keys(gs(si).pos).length||gs(si).extras.length||qrState[si];
-  if(changed&&!confirm('¿Salir sin guardar? Los cambios se perderán.'))return;
+  if(!_adminMode){
+    const changed=Object.keys(gs(si).vals).length||Object.keys(gs(si).pos).length||gs(si).extras.length||qrState[si];
+    if(changed&&!confirm('¿Salir sin guardar? Los cambios se perderán.'))return;
+  }
   document.getElementById('screen-edit').style.display='none';
   document.getElementById('screen-select').style.display='flex';
 };
@@ -1191,131 +1180,82 @@ function backToEmail(){
 }
 
 
-// ─── ADMIN ───────────────────────────────────────────────────────────────────
-const ADMIN_CODE = '4896';
-var _adminMode = false;
 
-// Default positions stored in localStorage per slide+field
+// ─── ADMIN ────────────────────────────────────────────────────────────────────
+const ADMIN_CODE='4896';
+var _adminMode=false;
+
 function getAdminPositions(){
-  try{ return JSON.parse(localStorage.getItem('ua_inv_admin_pos')||'{}'); }catch(e){return {};}
-}
-function saveAdminPositions(){
-  // Save current positions of all fields for current slide to localStorage as defaults
-  const adminPos = getAdminPositions();
-  SLIDES.forEach((s,si2)=>{
-    adminPos[si2] = adminPos[si2] || {};
-    s.fields.forEach(f=>{
-      const p = state[si2] && state[si2].pos && state[si2].pos[f.key]
-        ? state[si2].pos[f.key]
-        : {lp: f.lp, tp: f.tp};
-      adminPos[si2][f.key] = p;
-    });
-  });
-  // Also save current slide's current positions
-  if(state[si]){
-    adminPos[si] = adminPos[si] || {};
-    allFields().forEach(f=>{
-      adminPos[si][f.key] = gp(si, f.key);
-    });
-  }
-  localStorage.setItem('ua_inv_admin_pos', JSON.stringify(adminPos));
-  showToast('✅ Posiciones guardadas para todos');
-  closeAdmin();
+  try{return JSON.parse(localStorage.getItem('ua_inv_admin_pos')||'{}');}catch(e){return {};}
 }
 
-// Apply admin positions as defaults on load
 function applyAdminDefaults(si2){
-  const adminPos = getAdminPositions();
-  if(!adminPos[si2]) return;
-  gs(si2); // ensure state exists
-  Object.entries(adminPos[si2]).forEach(([key, pos])=>{
-    if(!state[si2].pos[key]){ // only if user hasn't moved it
-      state[si2].pos[key] = pos;
-    }
+  const ap=getAdminPositions();
+  if(!ap[si2])return;
+  gs(si2);
+  Object.entries(ap[si2]).forEach(([key,pos])=>{
+    if(!state[si2].pos[key]) state[si2].pos[key]=pos;
   });
 }
 
 function openAdminPin(){
   document.getElementById('admin-pin').value='';
   document.getElementById('admin-pin-err').textContent='';
-  document.getElementById('admin-pin-overlay').style.display='flex';
+  document.getElementById('admin-pin-overlay').classList.add('on');
   setTimeout(()=>document.getElementById('admin-pin').focus(),100);
 }
 function closeAdminPin(){
-  document.getElementById('admin-pin-overlay').style.display='none';
+  document.getElementById('admin-pin-overlay').classList.remove('on');
 }
+document.getElementById('admin-pin').addEventListener('keydown',e=>{
+  if(e.key==='Enter')verifyAdminPin();
+});
 function verifyAdminPin(){
-  const pin = document.getElementById('admin-pin').value.trim();
-  if(pin === ADMIN_CODE){
-    _adminMode = true;
+  const pin=document.getElementById('admin-pin').value.trim();
+  if(pin===ADMIN_CODE){
     closeAdminPin();
     openAdmin();
-  } else {
-    document.getElementById('admin-pin-err').textContent = 'Código incorrecto.';
+  }else{
+    document.getElementById('admin-pin-err').textContent='Código incorrecto.';
     document.getElementById('admin-pin').value='';
     document.getElementById('admin-pin').focus();
   }
 }
-document.getElementById('admin-pin').addEventListener('keydown', e=>{
-  if(e.key==='Enter') verifyAdminPin();
-});
 
 function openAdmin(){
-  buildAdminPanel();
-  document.getElementById('admin-overlay').classList.add('open');
-  // Enable drag for admin
-  cv.style.cursor = 'crosshair';
+  _adminMode=true;
+  document.getElementById('admin-bar').classList.add('on');
+  // Push hdr down
+  document.getElementById('hdr').style.marginTop='44px';
+  document.getElementById('screen-select').style.marginTop='44px';
+  cv.style.cursor='crosshair';
+  showToast('Modo admin activo — arrastrá los textos');
 }
+
 function closeAdmin(){
-  _adminMode = false;
-  document.getElementById('admin-overlay').classList.remove('open');
-  cv.style.cursor = 'default';
+  _adminMode=false;
+  document.getElementById('admin-bar').classList.remove('on');
+  document.getElementById('hdr').style.marginTop='';
+  document.getElementById('screen-select').style.marginTop='';
+  cv.style.cursor='default';
+  showToast('Modo admin cerrado');
 }
 
-function buildAdminPanel(){
-  const container = document.getElementById('admin-slides');
-  container.innerHTML = '';
+function saveAdminPositions(){
+  const ap=getAdminPositions();
+  // Save positions for every slide that has been touched
   SLIDES.forEach((s,si2)=>{
-    const div = document.createElement('div');
-    div.className = 'admin-slide';
-    let fieldsHtml = '';
+    if(!state[si2])return;
+    ap[si2]=ap[si2]||{};
     s.fields.forEach(f=>{
-      const p = (state[si2]&&state[si2].pos&&state[si2].pos[f.key]) || {lp:f.lp, tp:f.tp};
-      fieldsHtml += `<div class="admin-field">
-        <div class="admin-field-label">${f.label}</div>
-        <div class="admin-field-vals">
-          <div class="admin-pos-row">
-            <label>X</label>
-            <input type="range" min="0" max="95" value="${p.lp.toFixed(1)}"
-              oninput="adminMoveField(${si2},'${f.key}',parseFloat(this.value),null);this.nextElementSibling.textContent=parseFloat(this.value).toFixed(1)+'%'">
-            <span class="admin-pos-val">${p.lp.toFixed(1)}%</span>
-          </div>
-          <div class="admin-pos-row">
-            <label>Y</label>
-            <input type="range" min="0" max="95" value="${p.tp.toFixed(1)}"
-              oninput="adminMoveField(${si2},'${f.key}',null,parseFloat(this.value));this.nextElementSibling.textContent=parseFloat(this.value).toFixed(1)+'%'">
-            <span class="admin-pos-val">${p.tp.toFixed(1)}%</span>
-          </div>
-        </div>
-      </div>`;
+      if(state[si2].pos&&state[si2].pos[f.key]){
+        ap[si2][f.key]=state[si2].pos[f.key];
+      }
     });
-    div.innerHTML = `<div class="admin-slide-hdr">
-      <span>${s.label}</span>
-      <span>${s.fields.length} campos</span>
-    </div>${fieldsHtml}`;
-    container.appendChild(div);
   });
-}
-
-function adminMoveField(si2, key, lp, tp){
-  gs(si2);
-  const cur = gp(si2, key);
-  state[si2].pos[key] = {
-    lp: lp !== null ? lp : cur.lp,
-    tp: tp !== null ? tp : cur.tp
-  };
-  // If editing current slide, redraw
-  if(si2 === si && loaded) draw();
+  localStorage.setItem('ua_inv_admin_pos',JSON.stringify(ap));
+  showToast('✅ Posiciones guardadas para todos los modelos');
+  closeAdmin();
 }
 
 buildGrid();
