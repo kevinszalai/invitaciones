@@ -359,10 +359,10 @@ function loadBg(){
 
 // TEXT HELPERS
 function drawTextField(c,v,x,y,mwPx,sz,lh,color,bold,align,shadow){
-  // Use full canvas width minus margin as max width if mwPx is small
+  // Effective max width: original field width but allow up to right margin
   const canvasW = c.canvas ? c.canvas.width : cv.width;
-  const margin = canvasW * 0.06;
-  const effectiveMw = Math.max(mwPx, canvasW - x - margin);
+  const rightMargin = canvasW * 0.05;
+  const effectiveMw = mwPx > 0 ? Math.min(mwPx/100*canvasW > canvasW*0.5 ? mwPx : canvasW - x - rightMargin, canvasW - x - rightMargin) : canvasW - x - rightMargin;
 
   // Auto-wrap: split each paragraph into wrapped lines if needed
   function wrapLine(text, maxW, font){
@@ -465,6 +465,7 @@ function draw(){
   ctx.clearRect(0,0,W,H);
   ctx.drawImage(bgImg,0,0,W,H);
   drawStatic();
+  drawAssets();
   allFields().forEach(f=>{
     const v=gv(si,f.key),p=gp(si,f.key);
     const sz=gf(si,f.key),lh=glh(si,f.key),bold=gb(si,f.key),color=gc(si,f.key);
@@ -485,7 +486,7 @@ function draw(){
 }
 
 // Asset images redraw on load
-Object.values(assetImgs).forEach(arr=>arr.forEach(img=>{img.onload=()=>{if(loaded)draw();};}));
+Object.values(assetImgs).forEach(arr=>arr.forEach(img=>{img.onload=()=>{if(loaded)draw();};if(img.complete&&img.naturalWidth&&loaded)draw();}));
 
 // FIELDS UI
 let extraCounter=0;
