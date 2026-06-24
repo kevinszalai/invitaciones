@@ -465,7 +465,6 @@ function draw(){
   ctx.clearRect(0,0,W,H);
   ctx.drawImage(bgImg,0,0,W,H);
   drawStatic();
-  drawAssets();
   allFields().forEach(f=>{
     const v=gv(si,f.key),p=gp(si,f.key);
     const sz=gf(si,f.key),lh=glh(si,f.key),bold=gb(si,f.key),color=gc(si,f.key);
@@ -486,7 +485,7 @@ function draw(){
 }
 
 // Asset images redraw on load
-Object.values(assetImgs).forEach(arr=>arr.forEach(img=>{img.onload=()=>{if(loaded)draw();};if(img.complete&&img.naturalWidth&&loaded)draw();}));
+
 
 // FIELDS UI
 let extraCounter=0;
